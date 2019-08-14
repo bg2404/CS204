@@ -48,7 +48,6 @@ bool checkBalance(string str) {
     if(s.size() > 1) {
         balance = false;
     }
-
     return balance;
 }
 
