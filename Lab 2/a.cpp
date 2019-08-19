@@ -62,15 +62,16 @@ class LinkedList{
 
         void Search(double d) {
             struct node* temp_node = top_node;
-            bool found = false;
+            int count = 0;
             while(temp_node != NULL) {
                 if(d*d >= temp_node->x*temp_node->x + temp_node->y*temp_node->y) {
-                    cout << "(" << temp_node->x << ", " << temp_node->y << ") ";
-                    found = true;
+                    count++;
                 }
                 temp_node = temp_node->next;
             }
-            if(!found) {
+            if(count) {
+                cout << count;
+            } else {
                 cout << "-1";
             }
             cout << '\n';
@@ -113,10 +114,14 @@ int main() {
             cin >> x >> y;
             ll.AddFirst(x,y);
         } else if(o == 2) {
-            cout << ll.DelFirst() << '\n';
+            if(ll.DelFirst()) {
+                cout << ll.DelFirst() << '\n';
+            }
         } else if(o == 3) {
             cin >> x >> y;
-            cout << ll.Del(x,y) << '\n';
+            if(ll.Del(x,y)) {
+                cout << ll.Del(x,y) << '\n';
+            }
         } else if(o == 4) {
             cin >> d;
             ll.Search(d);
