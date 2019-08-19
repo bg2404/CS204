@@ -2,11 +2,20 @@
 
 using namespace std;
 
-string s(int n, char x);
-
+vector<string> var;
+vector<string> val;
 vector<string> extracts;
-bool evaluable = true;
+bool assignmentPresent = false;
 
+int findInVector(vector<string> var, string s) {
+    int i;
+    for(i = 0; i < var.size(); ++i) {
+        if(var[i] == s) {
+            break;
+        }
+    }
+    return i;
+}
 void extractIVO(string str) { 
     extracts.clear();
     stringstream ss;     
@@ -35,7 +44,9 @@ void extractIVO(string str) {
 
 int precedance(string c) 
 { 
-	if(c == "^") {
+    if(c == "#") {
+        return 4;
+    }else if(c == "^") {
         return 3;
     } else if(c == "*" || c == "/") {
 	    return 2; 
@@ -89,7 +100,6 @@ vector<string> ItoP(vector<string> inFix)
 struct eTree {
     string value;
     bool isVariable;
-    string varValue;
     eTree *left, *right;
 };
 
@@ -97,8 +107,16 @@ eTree* newNode(string value) {
     eTree *temp = new eTree;
     temp->value = value;
     temp->right = temp->left = NULL;
-    temp->isVariable = false;
-    temp->varValue = "";
+    if(isalpha(value[0])) {
+        temp->isVariable = true;
+        int present_pos = findInVector(var, value);
+        if(present_pos == var.size()) {
+            var.push_back(value);
+            val.push_back("");
+        }
+    } else {
+        temp->isVariable = false;
+    }
     return temp;
 }
 
@@ -114,7 +132,7 @@ eTree* makeTree(vector<string> postFix) {
             t = newNode(postFix[i]);
             t_R = st.top();
             st.pop();
-            if(postFix[i] != "^") {
+            if(postFix[i] != "#") {
                 t_L = st.top();
                 st.pop();
             } else {
@@ -137,10 +155,34 @@ string solve(eTree* t) {
         return "0";
     }
     if(isalnum((t->value)[0])) {
+        if(t->isVariable) {
+            string s = t->value;
+            int i;
+            for(i = 0; i < var.size(); ++i) {
+                if(var[i] == s){
+                    break;
+                }
+            }
+            if(i < var.size()) {
+                return val[i];
+            } else {
+                return "";
+            }
+        }
         return t->value;
     } else {
+        if(t->value == "=") {
+            int present_pos = findInVector(var, t->left->value);
+            string b = solve(t->right);
+            val[present_pos] = b;
+            assignmentPresent = true;
+            return "";
+        }
         string a = solve(t->left);
         string b = solve(t->right);
+        if(a == "" || b == "") {
+            return "";
+        }
         int a_int = stoi(a);
         int b_int = stoi(b);
         int ans;
@@ -152,10 +194,10 @@ string solve(eTree* t) {
             ans = a_int * b_int;
         } else if(t->value == "/") {
             ans = a_int / b_int;
-        } else if(t->value == "^") {
+        } else if(t->value == "#") {
             ans = a_int - b_int;
-        } else {
-
+        } else if(t->value == "^") {
+            ans = pow(a_int, b_int);
         }
 
         return to_string(ans);
@@ -173,24 +215,31 @@ int main() {
     int n;
     cin >> n;
     while(n--) {
+        var.clear();
+        val.clear();
         int l;
         cin >> l;
         while(l--) {
+            assignmentPresent = false;
             string input;
             cin >> input;
             input = '(' + input + ')';
             for(int i = 1; i < input.size(); ++i) {
                 if(input[i] == '-' && input[i-1] == '(') {
-                    input[i] = '^';
+                    input[i] = '#';
                 }
             }
             extractIVO(input);
-            printF(extracts);
             vector<string> postFix = ItoP(extracts);
-            printF(postFix);
             eTree *t = makeTree(postFix);
-            cout << solve(t);
-            cout << '\n';
+            string ans = solve(t);
+            if(ans == "") {
+                if(!assignmentPresent) {
+                    cout << "CANT BE EVALUATED\n";
+                }
+            } else {
+                cout << ans << '\n';
+            }
         }
     }
     return 0;
