@@ -178,6 +178,9 @@ string solve(eTree* t) {
         if(t->value == "=") {
             int present_pos = findInVector(var, t->left->value);
             string b = solve(t->right);
+            if(b == "") {
+                return "";
+            }
             val[present_pos] = b;
             assignmentPresent = true;
             return "";
