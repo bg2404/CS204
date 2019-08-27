@@ -7,6 +7,137 @@ vector<string> val;
 vector<string> extracts;
 bool assignmentPresent = false;
 
+enum color {RED, BLACK};
+
+struct node {
+    int color;
+    string variable;
+    string value;
+    struct node* left;
+    struct node* right;
+    struct node* p;
+}*ROOT, *NIL;
+
+struct node* createNode(string variable, string value) {
+    struct node* new_node = new struct node;
+    new_node->color = RED;
+    new_node->variable = variable;
+    new_node->value = value;
+    new_node->left = NIL;
+    new_node->right = NIL;
+    new_node->p = NIL;
+    return new_node;
+}
+
+struct node* leftRotate(struct node* x) {
+    struct node* y = x->right;
+    x->right = y->left;
+    if(y->left != NIL) {
+        y->left->p = x;
+    }
+    y->p = x->p;
+    if(x->p == NIL) {
+        ROOT = y;
+    } else if(x->p->left == x) {
+        x->p->left = y;
+    } else {
+        x->p->right = y;
+    }
+    y->left = x;
+    x->p = y;
+    return x;
+}
+
+struct node* rightRotate(struct node* x) {
+    struct node* y = x->left;
+    x->left = y->right;
+    if(y->right != NIL) {
+        y->right->p = x;
+    }
+    y->p = x->p;
+    if(x->p == NIL) {
+        ROOT = y;
+    } else if(x->p->left == x) {
+        x->p->left = y;
+    } else {
+        x->p->right = y;
+    }
+    y->right = x;
+    x->p = y;
+    return x;
+}
+
+void insertNodeFixup(struct node* z) {
+    while(z->p != NIL && z->p->color == RED) {
+        if(z->p == z->p->p->left) {
+            struct node* y = z->p->p->right;
+            if(y->color == RED) {
+                z->p->color = BLACK;
+                y->color = BLACK;
+                z->p->p->color = RED;
+                z = z->p->p;
+            } else {
+                if(z == z->p->right) {
+                    z = z->p;
+                    leftRotate(z);
+                }
+                z->p->color = BLACK;
+                z->p->p->color = RED;
+                rightRotate(z->p->p);
+            }
+        } else {
+            struct node* y = z->p->p->left;
+            if(y->color == RED) {
+                z->p->color = BLACK;
+                y->color = BLACK;
+                z->p->p->color = RED;
+                z = z->p->p;
+            } else {
+                if(z == z->p->left) {
+                    z = z->p;
+                    rightRotate(z);
+                }
+                z->p->color = BLACK;
+                z->p->p->color = RED;
+                leftRotate(z->p->p);
+            }
+        }
+    }
+    ROOT->color = BLACK;
+}
+
+void insertNode(string variable, string value) {
+    struct node* z = createNode(variable, value);
+    struct node* y = NIL;
+    struct node* x = ROOT;
+    while(x != NIL) {
+        y = x;
+        if(z->variable < x->variable) {
+            x = x->left;
+        } else {
+            x = x->right;
+        }
+    }
+    z->p = y;
+    if(y == NIL) {
+        ROOT = z;
+    } else if(z->variable < y->variable) {
+        y->left = z;
+    } else {
+        y->right = z;
+    }
+}
+
+struct node* searchNode(struct node* root, string variable) {
+    if(root == NIL || variable == root->variable) {
+        return root;
+    }
+    if(variable < root->variable) {
+        return searchNode(root->left, variable);
+    }
+    return searchNode(root->right, variable);
+}
+
 int findInVector(vector<string> var, string s) {
     int i;
     for(i = 0; i < var.size(); ++i) {
@@ -113,10 +244,9 @@ eTree* newNode(string value) {
     temp->right = temp->left = NULL;
     if(isalpha(value[0])) {
         temp->isVariable = true;
-        int present_pos = findInVector(var, value);
-        if(present_pos == var.size()) {
-            var.push_back(value);
-            val.push_back("");
+        struct node* f = searchNode(ROOT, value);
+        if(f == NIL) {
+            insertNode(value, "");
         }
     } else {
         temp->isVariable = false;
@@ -160,15 +290,9 @@ string solve(eTree* t) {
     }
     if(isalnum((t->value)[0])) {
         if(t->isVariable) {
-            string s = t->value;
-            int i;
-            for(i = 0; i < var.size(); ++i) {
-                if(var[i] == s){
-                    break;
-                }
-            }
-            if(i < var.size()) {
-                return val[i];
+            struct node* f = searchNode(ROOT, t->value);
+            if(f != NIL) {
+                return f->value;
             } else {
                 return "";
             }
@@ -176,12 +300,12 @@ string solve(eTree* t) {
         return t->value;
     } else {
         if(t->value == "=") {
-            int present_pos = findInVector(var, t->left->value);
+            struct node* f = searchNode(ROOT, t->left->value);
             string b = solve(t->right);
             if(b == "") {
                 return "";
             }
-            val[present_pos] = b;
+            f->value = b;
             assignmentPresent = true;
             return "";
         }
