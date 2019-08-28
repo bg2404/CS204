@@ -2,8 +2,6 @@
 
 using namespace std;
 
-vector<string> var;
-vector<string> val;
 vector<string> extracts;
 bool assignmentPresent = false;
 
@@ -346,8 +344,7 @@ int main() {
     int n;
     cin >> n;
     while(n--) {
-        var.clear();
-        val.clear();
+        ROOT = NIL;
         int l;
         cin >> l;
         while(l--) {
