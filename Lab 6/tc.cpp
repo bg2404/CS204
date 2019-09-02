@@ -17,10 +17,10 @@ int binary_search(vector<int> arr, int i, int j, int key) {
 }
 
 int main() {
-    int t;
-    cin >> t;
     int n;
     cin >> n;
+    int t;
+    cin >> t;
     int q[t][3];
     vector<int> users;
     for(int i = 0; i < t; ++i) {
@@ -33,7 +33,7 @@ int main() {
 
     sort(users.begin(), users.end());
     int j = 1;
-    for(int i = 1; i < users.size(); ++i) {
+    for(unsigned int i = 1; i < users.size(); ++i) {
         if(users[i] != users[i-1]) {
             users[j] = users[i];
             ++j;
