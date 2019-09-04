@@ -113,8 +113,12 @@ string sub(string a, string b) {
 }
 
 int main() {
-    string a, b;
-    cin >> a >> b;
-    cout << sub(a,b);
+    int T;
+    cin >> T;
+    while(T--) {
+        string a, b;
+        cin >> a >> b;
+        cout << sub(a,b) << '\n';
+    }
     return 0;
 }

@@ -185,6 +185,6 @@ int main() {
         exit(-1);
     }
     auto data = divide(a,b);
-    cout << "q = " << get<0>(data) << " r = " << get<1>(data) << '\n';
+    cout << get<0>(data) << "\n" << get<1>(data) << '\n';
     return 0;
 }
