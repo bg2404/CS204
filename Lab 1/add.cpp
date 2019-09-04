@@ -60,8 +60,12 @@ string add(string a, string b) {
 }
 
 int main() {
-    string a, b;
-    cin >> a >> b;
-    cout << add(a,b);
+    int T;
+    cin >> T;
+    while(T--) {
+        string a, b;
+        cin >> a >> b;
+        cout << add(a,b) << '\n';
+    }
     return 0;
 }

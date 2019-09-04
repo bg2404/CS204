@@ -178,13 +178,17 @@ tuple<string, string> divide(string a, string b) {
 }
 
 int main() {
-    string a, b;
-    cin >> a >> b;
-    if(b == "0") {
-        cout << "Divide by zero error.";
-        exit(-1);
+    int T;
+    cin >> T;
+    while(T--) {
+        string a, b;
+        cin >> a >> b;
+        if(b == "0") {
+            cout << "Divide by zero error.";
+            exit(-1);
+        }
+        auto data = divide(a,b);
+        cout << get<0>(data) << "\n" << get<1>(data) << '\n';
     }
-    auto data = divide(a,b);
-    cout << "q = " << get<0>(data) << " r = " << get<1>(data) << '\n';
     return 0;
 }
