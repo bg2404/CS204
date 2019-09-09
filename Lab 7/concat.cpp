@@ -4,7 +4,7 @@
 #include <algorithm> 
 using namespace std; 
   
-int myCompare(string X, string Y) 
+int comparator(string X, string Y) 
 { 
     string XY = X.append(Y); 
   
@@ -13,9 +13,9 @@ int myCompare(string X, string Y)
     return XY.compare(YX) > 0 ? 1: 0; 
 } 
   
-void printLargest(vector<string> arr) 
+void findNum(vector<string> arr) 
 { 
-    sort(arr.begin(), arr.end(), myCompare); 
+    sort(arr.begin(), arr.end(), comparator); 
   
     for (int i=0; i < arr.size() ; i++ ) 
         cout << arr[i]; 
@@ -34,7 +34,7 @@ int main()
             cin >> s;
             arr.push_back(s);
         } 
-        printLargest(arr);
+        findNum(arr);
         cout << '\n'; 
     }
    return 0; 
