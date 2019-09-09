@@ -106,15 +106,16 @@ string sub(string a, string b) {
         }
     }
     c = remove_zeroes(c);
-    if(!pos) {
-        c = '-' + c;
-    }
     return c;
 }
 
 int main() {
-    string a, b;
-    cin >> a >> b;
-    cout << sub(a,b);
+    int T;
+    cin >> T;
+    while(T--) {
+        string a, b;
+        cin >> a >> b;
+        cout << sub(a,b) << '\n';
+    }
     return 0;
 }

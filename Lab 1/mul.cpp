@@ -105,8 +105,12 @@ string mul(string a, string b) {
 }
 
 int main() {
-    string a, b;
-    cin >> a >> b;
-    cout << mul(a,b);
+    int T;
+    cin >> T;
+    while(T--) {
+        string a, b;
+        cin >> a >> b;
+        cout << mul(a,b) << '\n';
+    }
     return 0;
 }
