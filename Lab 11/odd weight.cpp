@@ -1,5 +1,7 @@
 #include<bits/stdc++.h>
+
 using namespace std;
+
 class Graph {
     vector<vector<int>> adj;
     vector<int> color;
@@ -40,11 +42,24 @@ public:
         return possible;
     }
 };
+
 int main() {
-    int n, m, u, v;
+    int n, m;
     cin >> n >> m;
-    Graph g(n);
-    for(int i = 0; i < m; ++i) cin >> u >> v, g.addEdge(u, v);
-    if(g.DFS()) cout << "YES" << '\n'; else cout << "NO\n";
+    int u[m], v[m], e[m], even = -1;
+    for(int i = 0; i < m; ++i) {
+        cin >> u[i] >> v[i] >> e[i];
+        if(!(e[i] & 1)) ++even;
+    }
+    Graph g(n + even + 1);
+    for(int i = 0; i < m; ++i) {
+        if(e[i] & 1) {
+            g.addEdge(u[i], v[i]);
+        } else {
+            g.addEdge(u[i], m + even);
+            g.addEdge(m + even--, v[i]);
+        }
+    }
+    if(g.DFS()) cout << "NO" << '\n'; else cout << "YES\n";
     return 0;
 }
