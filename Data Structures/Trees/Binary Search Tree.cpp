@@ -262,44 +262,46 @@ void BST::printTree(NODE* root) {
 }
 
 int main() {
-    BST t1(NULL), t2(NULL);
-    t1.insertNode(3);
-    t1.insertNode(1);
-    t1.insertNode(2);
-    NODE* node = new NODE;
-    node->key = 4;
-    node->left = node->right = NULL;
-    t2.insertNode(6);
-    t2.insertNode(5);
-    t2.insertNode(7);
-    if(t1.searchNode(5)) {
-        cout << "T";
-    } else {
-        cout << "F";
+    BST t1(NULL);
+    NODE* node = NULL;
+    int option = 1, x;
+    while(option) {
+        cout << "1. Insert\n";
+        cout << "2. Delete\n";
+        cout << "3. Print\n";
+        cout << "4. Search\n";
+        cout << "0. Exit\n";
+        cout << "Choose any option ";
+        cin >> option;
+        
+        switch(option) {
+            case 0:
+                break;
+            case 1:
+                cout << "Enter any integer ";
+                cin >> x;
+                t1.insertNode(x);
+                break;
+            case 2:
+                cout << "Enter any integer ";
+                cin >> x;
+                t1.deleteNode(x);
+                break;
+            case 3:
+                t1.printTree(t1.getRoot());
+                break;
+            case 4:
+                cout << "Enter any integer ";
+                cin >> x;
+                node = t1.searchNode(x);
+                if(node == NULL) cout << "F\n";
+                else cout << "T\n";
+                break;
+            default:
+                cout << "Enter a valid option\n";
+        }
+        cout << '\n';
     }
-    if(t1.searchNode(3)) {
-        cout << "T\n";
-    } else {
-        cout << "F\n";
-    }
-    t1.printTree(t1.getRoot());
-    cout << '\n';
-
-    t1.joinTree(t2, node);
-    t1.printTree(t1.getRoot());
-    cout << '\n';
-
-    node = t1.deleteNode(3);
-    free(node);
-    t1.printTree(t1.getRoot());
-    cout << '\n';
-
-    BST t3(NULL);
-    t3 = t1.splitTree(7);
-    t1.printTree(t1.getRoot());
-    cout << '\n';
-    t1.printTree(t3.getRoot());
-    cout << '\n';
 
     return 0;
 }

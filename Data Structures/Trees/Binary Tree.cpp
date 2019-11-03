@@ -8,12 +8,24 @@ struct NODE {
     struct NODE* right;
 };
 
-struct NODE* createNode(int data) {
+NODE* createNode(int data) {
     NODE* new_node = (struct NODE *) malloc(sizeof(struct NODE));
     new_node->data = data;
     new_node->left = NULL;
     new_node->right = NULL;
     return new_node;
+}
+
+NODE* insertNode(NODE* parent, int key, int dir) {
+    if(parent == NULL) {
+        return createNode(key);
+    }
+    if(dir > 0) {
+        parent->right = createNode(key);
+    } else {
+        parent->left = createNode(key);
+    }
+    return parent;
 }
 
 void preOrderTraversal(NODE* root) {
