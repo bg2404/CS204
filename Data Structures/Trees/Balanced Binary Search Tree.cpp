@@ -202,14 +202,15 @@ Node *root = NULL;
 	root = insert(root, 1); 
 	root = insert(root, 2); 
 
-	cout << "Preorder traversal of the "
+	cout << "Inorder traversal of the "
 			"constructed AVL tree is \n"; 
-	preOrder(root); 
+	inOrderTraversal(root); 
 
 	root = deleteNode(root, 10); 
-	cout << "\nPreorder traversal after"
+	cout << "\nInorder traversal after"
 		<< " deletion of 10 \n"; 
-	preOrder(root); 
+	inOrderTraversal(root); 
+	cout << '\n';
 
 	return 0; 
 }
