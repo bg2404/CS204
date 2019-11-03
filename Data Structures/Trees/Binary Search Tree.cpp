@@ -23,6 +23,7 @@ public:
     void joinTree(BST Tree, NODE* node);
     NODE* searchNode(int key);
     NODE* deleteNode(int key);
+    BST splitTree(int key);
     void printTree(NODE* root);
     NODE* getRoot() {
         return root;
@@ -185,6 +186,74 @@ NODE* BST::deleteNode(int key) {
     return node;
 }
 
+BST BST::splitTree(int key) {
+    NODE *r1 = NULL, *r2 = NULL;
+    bool right_flag = true;
+    NODE* current = root;
+    while(current != NULL) {
+        if(current->key == key) {
+            right_flag = false;
+            if(r1 == NULL) {
+                r1 = current;
+                r1->parent = NULL;
+            } else {
+                r1->right = current;
+                r1->right->parent = r1;
+                r1 = r1->right;
+            }
+            if(current->right != NULL) {
+                if(r2 == NULL) {
+                    r2 = current->right;
+                    r2->parent = NULL;
+                } else {
+                    r2->left = current->right;
+                    r2->left->parent = r2;
+                    r2 = r2->left;
+                }
+            }
+            break;
+        } else if(current->key < key) {
+            if(r1 == NULL) {
+                r1 = current;
+                r1->parent = NULL;
+            } else {
+                r1->right = current;
+                r1->right->parent = r1;
+                r1 = r1->right;
+            }
+            current = current->right;
+        } else {
+            if(r2 == NULL) {
+                r2 = current;
+                r2->parent = NULL;
+            } else {
+                r2->left = current;
+                r2->left->parent = r2;
+                r2 = r2->left;
+            }
+            current = current->left;
+        }
+    }
+
+    if(r1 != NULL) {
+        r1->right = NULL;
+        while(r1->parent != NULL) {
+            r1 = r1->parent;
+        }
+    }
+    if(r2 != NULL) {
+        if(right_flag) r2->left = NULL;
+        while(r2->parent != NULL) {
+            r2 = r2->parent;
+        }
+    }
+
+    root = r1;
+    BST T(r2);
+    
+    return T;
+}
+
 void BST::printTree(NODE* root) {
     if(root == NULL) return;
     printTree(root->left);
@@ -224,5 +293,13 @@ int main() {
     free(node);
     t1.printTree(t1.getRoot());
     cout << '\n';
+
+    BST t3(NULL);
+    t3 = t1.splitTree(7);
+    t1.printTree(t1.getRoot());
+    cout << '\n';
+    t1.printTree(t3.getRoot());
+    cout << '\n';
+
     return 0;
 }
