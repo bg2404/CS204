@@ -3,8 +3,8 @@
 
 using namespace std;
 
-int parent[10009];
-int Rank[10009];
+int parent[100009];
+int Rank[100009];
 void init(int n) {
     for(int i=0;i<=n+1;i++) {
         parent[i]=i;
