@@ -30,7 +30,7 @@ void Graph::DFS() {
             visited[i] = true;
             while(!s.empty()) {
                 v = s.top();
-                cout << v << ' ';
+                cout << v + 1 << ' ';
                 s.pop();
                 for(int j = 0; j < adj[v].size(); ++j) {
                     if(!visited[adj[v][j]]) {
@@ -49,9 +49,10 @@ int main() {
     Graph G(V);
     for(int i = 0; i < E;++i) {
         cin >> u >> v;
-        G.insertEdge(u, v);
+        G.insertEdge(u-1, v-1);
     }
 
     G.DFS();
+    cout << endl;
     return 0;
 }
