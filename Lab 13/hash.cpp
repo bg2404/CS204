@@ -56,6 +56,7 @@ bool search(string s) {
     NODE *temp = hash_table[h_value];
     while(temp) {
         if(temp->value == s) return true;
+        temp = temp->next;
     }
     return false;
 }
@@ -86,12 +87,11 @@ int main() {
     bool flag = false;
     for(int i = 0; i < NP.size(); ++i) {
         if(search(NP[i])) {
-            printf("FOUND - ");
-            cout << NP[i] << '\n';
+            printf("YES\n");
             flag = true;            
             break;
         }
     }
-    if(!flag) printf("NOT FOUND.\n");
+    if(!flag) printf("NO\n");
     return 0;
 }

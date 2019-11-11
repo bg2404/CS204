@@ -97,12 +97,10 @@ int main() {
     
     for(int i = 0; i < NP.size(); ++i) {
         if(t.search(NP[i])) {
-            printf("FOUND - ");
-            cout << NP[i] << '\n';
-            flag = true;            
+            printf("YES\n");        
             break;
         }
     }
-    if(!flag) printf("NOT FOUND.\n");
+    if(!flag) printf("NO\n");
     return 0;
 }
