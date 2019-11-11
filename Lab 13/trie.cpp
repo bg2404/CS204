@@ -97,6 +97,7 @@ int main() {
     
     for(int i = 0; i < NP.size(); ++i) {
         if(t.search(NP[i])) {
+            printf("FOUND - ");
             cout << NP[i] << '\n';
             flag = true;            
             break;
