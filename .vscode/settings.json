@@ -6,6 +6,7 @@
         "valarray": "cpp",
         "algorithm": "cpp",
         "iostream": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "vector": "cpp"
     }
 }
